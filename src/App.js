@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Halo React
+          Halo Dunia
         </a>
       </header>
     </div>
