@@ -1,9 +1,9 @@
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <h1>
           Hello React 02 July 2022, 18:42
-      </header>
+      </h1>
     </div>
   );
 }
