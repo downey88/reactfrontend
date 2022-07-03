@@ -2,7 +2,7 @@ function App() {
   return (
     <div className="App">
       <h1>
-          Hello React 02 July 2022, 18:42
+          Hello React 03 July 2022, 15:25  
       </h1>
     </div>
   );
