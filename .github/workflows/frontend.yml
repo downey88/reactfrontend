@@ -19,7 +19,10 @@ jobs:
 
     steps:
     - name: Connect using SSH
-    - run: ssh -o StrictHostKeyChecking=no ubuntu@13.214.130.100 -i ${{ secrets.KEY_SSH }} 
+      run: ssh -o StrictHostKeyChecking=no ubuntu@13.214.130.100 -i $KEY_SSH
+      shell: bash 
+      env: 
+        KEY_SSH: ${{ secrets.KEY_SSH }}
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
