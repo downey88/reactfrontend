@@ -18,13 +18,6 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Connect using SSH
-      run: ssh -o StrictHostKeyChecking=no $USER_SSH@$HOST_SSH -i $KEY_SSH
-      shell: bash 
-      env: 
-        KEY_SSH: ${{ secrets.KEY_SSH }}
-        USER_SSH: ${{ secrets.USER_SSH }}
-        HOST_SSH: ${{ secrets.HOST_SSH }}
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
