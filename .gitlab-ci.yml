@@ -1,0 +1,128 @@
+stages:
+  - .pre
+  - build
+  - test
+  - deploy_s3_staging
+  - deploy_s3_production
+  - build_docker_image
+  - test_docker_image
+  - deploy_using_docker_image
+  
+
+# Variables can be minimized by using Environment
+variables:
+  APP_VERSION: $CI_PIPELINE_IID
+  IMAGE_NAME: $DOCKER_USER/reactapp
+
+.linter:
+  stage: .pre
+  image: node:16-alpine
+  script:
+    - yarn install
+    - yarn lint
+
+.test_unit:
+  stage: .pre
+  image: node:16-alpine
+  script:
+    - yarn install
+    - yarn test
+
+build:
+  stage: build
+  image: node:16-alpine
+  script:
+    - yarn install
+    - yarn build
+    - echo $APP_VERSION > build/version.txt
+  artifacts:
+    paths: 
+      - build
+
+.test_website:
+  stage: test
+  image: node:alpine
+  script: 
+    - yarn global add serve
+    - apk add curl
+    - serve -s build &
+    - sleep 10
+    - curl http://localhost:3000 | grep "React App"
+
+
+.deploy_s3:
+  image: 
+    name: amazon/aws-cli:2.4.11
+    entrypoint: [""]
+  script:
+    - aws s3 sync build s3://$AWS_S3_BUCKET --delete
+    - curl $CI_ENVIRONMENT_URL
+
+# Deploy to Staging S3
+.deploy staging:
+  stage: deploy_s3_staging
+  environment: staging
+  extends: .deploy_s3
+
+# Deploy to Production S3 if pushing from main branch
+.deploy_production:
+  stage: deploy_s3_production
+  #rules:
+  #  - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  when: manual
+  environment: production
+  extends: .deploy_s3
+
+build_docker_image:
+  stage: build_docker_image
+  image: docker:20.10.17
+  services:
+    - docker:20.10.17-dind
+  before_script:
+    - echo $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE -t $CI_REGISTRY_IMAGE:$APP_VERSION .
+    - docker push --all-tags $CI_REGISTRY_IMAGE
+    - docker image ls
+    - echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+    - docker build -t $IMAGE_NAME:$APP_VERSION . && docker build -t $IMAGE_NAME:latest .
+    - docker push $IMAGE_NAME:$APP_VERSION && docker push $IMAGE_NAME:latest
+
+.test_docker_image:
+  stage: test_docker_image
+  image: curlimages/curl
+  services:
+    - name: $CI_REGISTRY_IMAGE:$APP_VERSION
+      alias: website
+  script:
+    - curl http://website/version.html | grep $APP_VERSION
+
+.deploy using aws cli:
+  image:
+    name: amazon/aws-cli:2.4.11
+    entrypoint: [""]
+  stage: deploy_using_docker_image
+  when: manual
+  environment: production
+  script:
+    - yum install gettext -y
+    - export DEPLOY_TOKEN=$(echo $GITLAB_DEPLOY_TOKEN | tr -d "\n" | base64)
+    - envsubst < template/Dockerrun.aws.json > Dockerrun.aws.json
+    - envsubst < template/config.json > config.json
+    - aws s3 cp Dockerrun.aws.json s3://$AWS_S3_BUCKET/Dockerrun.aws.json
+    - aws s3 cp config.json s3://$AWS_S3_BUCKET/config.json
+
+.deploy using ssh:
+  stage: deploy_using_docker_image
+  when: manual
+  environment: production
+  before_script:
+    - chmod 400 $SSH_KEY
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY $SSH_USR@$EC2_IPADDRESS " 
+        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &&
+        sudo docker ps -aq | xargs sudo docker stop  | xargs sudo docker rm &&
+        sudo docker run -d -p 80:80 --name react_app $IMAGE_NAME:$APP_VERSION"
+
+
+
