@@ -1,4 +1,5 @@
-FROM hoosin/alpine-nginx-nodejs:latest
+#FROM hoosin/alpine-nginx-nodejs:latest
+FROM node:18-alpine
 
 ENV HOME=/home/app
 
