@@ -12,4 +12,4 @@ RUN npm run build
 
 RUN cp $HOME/build/* /usr/share/nginx/html/ -R
 
-EXPOSE 3000
+EXPOSE 80
