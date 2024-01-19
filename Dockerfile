@@ -1,21 +1,11 @@
 FROM node:14-alpine AS builder
-
-ENV HOME=/home/app
-
-COPY . $HOME/
-
-WORKDIR $HOME/
-
+WORKDIR /var/www/html
+COPY . /var/www/html/
 RUN npm install --silent --progress=false
-
 RUN npm run build
 
 
-
 FROM nginx:1.15.7-alpine AS server
-
-RUN cp $HOME/build/* /usr/share/nginx/html/ -R
-
-COPY --from=builder /$HOME/build/* /usr/share/nginx/html/
+COPY --from=builder /var/www/html/build/* /usr/share/nginx/html/
 
 EXPOSE 80
