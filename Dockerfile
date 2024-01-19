@@ -1,14 +1,10 @@
-FROM node:14-alpine AS builder
+FROM hoosin/alpine-nginx-nodejs:8.14.0
+
 WORKDIR /var/www/html
 COPY . /var/www/html/
 RUN npm install --silent --progress=false
 RUN npm run build
 
-
-FROM nginx:alpine AS server
-RUN apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/main libuv \
-    && apk add --no-cache --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main nodejs=14.17.1-r0 npm=7.17.0-r0 \
-    && apk add --no-cache --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community yarn=1.22.10-r0
-COPY --from=builder /var/www/html/build/* /usr/share/nginx/html/
+COPY /var/www/html/build/* /usr/share/nginx/html/
 
 EXPOSE 80
