@@ -5,7 +5,7 @@ RUN npm install --silent --progress=false
 RUN npm run build
 
 
-FROM nginx:1.15.7-alpine AS server
+FROM nginx:alpine AS server
 RUN apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/main libuv \
     && apk add --no-cache --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main nodejs=14.17.1-r0 npm=7.17.0-r0 \
     && apk add --no-cache --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community yarn=1.22.10-r0
