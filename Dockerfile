@@ -1,4 +1,4 @@
-FROM hoosin/alpine-nginx-nodejs:8.14.0
+FROM hoosin/alpine-nginx-nodejs:latest
 
 WORKDIR /var/www/html
 COPY . /var/www/html/
