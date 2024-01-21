@@ -1,3 +1,4 @@
+import React from 'react';
 import logo from './gitlab.svg';
 import './App.css';
 
