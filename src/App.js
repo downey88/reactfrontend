@@ -1,4 +1,3 @@
-import React from 'react';
 import logo from './gitlab.svg';
 import './App.css';
 
@@ -9,11 +8,11 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <a
           className="App-link"
-          href="https://gitlab.com"
+          href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Testing, 02 Januari 2023, 10:43
+         Testing, 02 Januari 2023, 10:43
         </a>
       </header>
     </div>
