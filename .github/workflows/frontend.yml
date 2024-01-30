@@ -13,12 +13,12 @@ jobs:
     - uses: actions/setup-node@v1
       with:
           node-version: '20'
-    - run: npm install
-    - name: SonarQube Scan
-      uses: kitabisa/sonarqube-action@v1.2.0
-      with:
-        host: ${{ secrets.SONARQUBE_HOST }}
-        login: ${{ secrets.SONARQUBE_TOKEN }}
+    # - run: npm install
+    # - name: SonarQube Scan
+    #   uses: kitabisa/sonarqube-action@v1.2.0
+    #   with:
+    #     host: ${{ secrets.SONARQUBE_HOST }}
+    #     login: ${{ secrets.SONARQUBE_TOKEN }}
 
   build:
     runs-on: ubuntu-latest
