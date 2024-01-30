@@ -1,14 +1,14 @@
-FROM hoosin/alpine-nginx-nodejs:8.14.0 as base
+FROM node:8.14.1-stretch-slim as build-stage
 WORKDIR /home/app
 COPY . /home/app
+RUN npm install --silent --progress=false
+RUN npm run build
 
-# RUN npm install --silent --progress=false
-# RUN npm run build
 
-RUN cat /etc/os-release && node -v 
-RUN ls /usr/share
-RUN ls /etc/nginx/
+FROM nginx:alpine3.18
+RUN ls /usr/local
+RUN ls /etc/nginx/ && ls /etc
 
-RUN cp /home/app/build/* /usr/share/nginx/html/ -R
+COPY --from=build-stage cp /home/app/build/* /usr/share/nginx/html/ -R
 
 EXPOSE 80
