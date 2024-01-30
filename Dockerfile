@@ -9,6 +9,6 @@ FROM nginx:alpine3.18
 RUN ls /usr/local
 RUN ls /etc/nginx/ && ls /etc
 
-COPY --from=build-stage cp /home/app/build/* /usr/share/nginx/html/ -R
+COPY --from=build-stage /home/app/build/* /usr/share/nginx/html/
 
 EXPOSE 80
