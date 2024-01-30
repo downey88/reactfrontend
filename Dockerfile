@@ -7,7 +7,7 @@ RUN npm run build
 
 FROM nginx:alpine3.18
 RUN ls /usr/local
-RUN ls /etc/nginx/conf.d
+RUN cat /etc/nginx/conf.d/default.conf
 
 #COPY --from=build-stage /home/app/build/* /usr/share/nginx/html/
 
