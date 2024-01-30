@@ -13,7 +13,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
           node-version: '20'
-    # - run: npm install
+    - run: npm install && npm run lint
     # - name: SonarQube Scan
     #   uses: kitabisa/sonarqube-action@v1.2.0
     #   with:
