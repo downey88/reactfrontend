@@ -5,6 +5,7 @@ COPY . /home/app
 RUN npm install --silent --progress=false
 RUN npm run build
 RUN ls /usr
+RUN ls /etc/nginx/
 RUN cp /home/app/build/* /usr/share/nginx/html/ -R
 
 EXPOSE 80
