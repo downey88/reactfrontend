@@ -7,8 +7,10 @@ RUN npm run build
 
 FROM nginx:alpine3.18
 RUN ls /usr/local
-RUN ls /etc/nginx/ && ls /etc
+RUN ls /etc/nginx/conf.d
 
 COPY --from=build-stage /home/app/build/* /usr/share/nginx/html/
+
+RUN ls  /usr/share/nginx/html/
 
 EXPOSE 80
