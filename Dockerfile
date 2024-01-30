@@ -1,4 +1,4 @@
-FROM hoosin/alpine-nginx-nodejs:8.14.0
+FROM hoosin/alpine-nginx-nodejs:10.16.0
 
 WORKDIR /home/app
 COPY . /home/app
