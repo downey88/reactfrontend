@@ -8,8 +8,6 @@
     "@testing-library/user-event": "^13.5.0",
     "browserslist": "^4.22.2",
     "caniuse-lite": "^1.0.30001579",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint": "^7.32.0",
     "fs-extra": "^11.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -47,6 +45,8 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0"
+    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }
