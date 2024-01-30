@@ -1,4 +1,4 @@
-FROM node:14.4-alpine as build-stage
+FROM node:8.11.0-alpine as build-stage
 WORKDIR /home/app
 COPY . /home/app
 RUN npm install --silent --progress=false
