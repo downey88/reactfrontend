@@ -13,10 +13,12 @@ jobs:
     - uses: actions/setup-node@v1
       with:
           node-version: '20'
-    - run: |
-        echo "Linting..."
-        
-       # npm install && npm run lint 
+    - run: npm install && npm run lint
+      - name: SonarQube Scan
+        uses: kitabisa/sonarqube-action@v1.2.0
+        with:
+          host: ${{ secrets.SONARQUBE_HOST }}
+          login: ${{ secrets.SONARQUBE_TOKEN }}
 
   build:
     runs-on: ubuntu-latest
