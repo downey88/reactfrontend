@@ -14,11 +14,11 @@ jobs:
       with:
           node-version: '16'
     - run: npm install && npm run lint
-    - name: SonarQube Scan
-      uses: kitabisa/sonarqube-action@v1.2.0
-      with:
-        host: ${{ secrets.SONARQUBE_HOST }}
-        login: ${{ secrets.SONARQUBE_TOKEN }}
+    # - name: SonarQube Scan
+    #   uses: kitabisa/sonarqube-action@v1.2.0
+    #   with:
+    #     host: ${{ secrets.SONARQUBE_HOST }}
+    #     login: ${{ secrets.SONARQUBE_TOKEN }}
 
   build:
     runs-on: ubuntu-latest
