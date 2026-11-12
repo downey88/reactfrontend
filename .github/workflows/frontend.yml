@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
           node-version: '22'
     - run: npm install && npm run lint
@@ -40,22 +40,22 @@ jobs:
           push: true
           tags: donnytri/reactapp:latest
         
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
 
-    if: github.event_name == 'push'
-    steps:
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+  #   if: github.event_name == 'push'
+  #   steps:
+  #   - name: Configure AWS credentials
+  #     uses: aws-actions/configure-aws-credentials@v4
+  #     with:
+  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Restart K8 Deployment
-      id: kubectl
-      uses: ianbelcher/eks-kubectl-action@master
-      with:
-        cluster_name: ${{ secrets.CLUSTER_NAME }}
-        args: rollout restart deployment/${{ secrets.DEPLOYMENT_NAME }} -n ${{ secrets.NAMESPACE }}
+  #   - name: Restart K8 Deployment
+  #     id: kubectl
+  #     uses: ianbelcher/eks-kubectl-action@master
+  #     with:
+  #       cluster_name: ${{ secrets.CLUSTER_NAME }}
+  #       args: rollout restart deployment/${{ secrets.DEPLOYMENT_NAME }} -n ${{ secrets.NAMESPACE }}
